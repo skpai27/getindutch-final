@@ -24,7 +24,6 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
     private FirebaseDatabase mFirebaseDatabase;
 
-    private ArrayList<Users> mMembers = new ArrayList<>();
     private String mGroupName;
     //private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
@@ -48,7 +47,6 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
     //provide a suitable constructor based on type of dataset
     //constructor will get the data we need
-    public GroupMembersAdapter(ArrayList<Users> members, String groupName, Context context){
         //mImageNames = imageNames;
         //mImages = images;
         mGroupName = groupName;

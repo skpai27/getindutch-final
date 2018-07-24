@@ -15,12 +15,12 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserAddExpenseAdapter extends RecyclerView.Adapter<UserAddExpenseAdapter.MyHolder> {
+public class AEUserAddExpenseAdapter extends RecyclerView.Adapter<AEUserAddExpenseAdapter.MyHolder> {
     Context c;
-    ArrayList<UserAddExpense> users = new ArrayList<>();
-    ArrayList<UserAddExpense> checkedUsers = new ArrayList<>();
+    ArrayList<AEUserAddExpenseClass> users = new ArrayList<>();
+    ArrayList<AEUserAddExpenseClass> checkedUsers = new ArrayList<>();
 
-    public UserAddExpenseAdapter(Context c, ArrayList<UserAddExpense> users){
+    public AEUserAddExpenseAdapter(Context c, ArrayList<AEUserAddExpenseClass> users){
         this.c = c;
         this.users = users;
     }
@@ -36,7 +36,7 @@ public class UserAddExpenseAdapter extends RecyclerView.Adapter<UserAddExpenseAd
     //data bound to views
     @Override
     public void onBindViewHolder(MyHolder holder, int position){
-        final UserAddExpense user = users.get(position);
+        final AEUserAddExpenseClass user = users.get(position);
 
         //get images
         Glide.with(c)
@@ -61,7 +61,7 @@ public class UserAddExpenseAdapter extends RecyclerView.Adapter<UserAddExpenseAd
             @Override
             public void onItemClick(View v, int pos){
                 CheckBox myCheckBox = (CheckBox) v;
-                UserAddExpense currentUser = users.get(pos);
+                AEUserAddExpenseClass currentUser = users.get(pos);
 
                 if(myCheckBox.isChecked()){
                     currentUser.setSelected(true);

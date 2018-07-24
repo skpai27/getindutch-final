@@ -8,7 +8,7 @@ package com.weikang.getindutch;
         import android.view.View;
         import android.view.ViewGroup;
 
-public class SummaryPage extends Fragment {
+public class MPFSummaryPage extends Fragment {
     private static final String TAG = "SummaryPageFragment";
 
     @Nullable

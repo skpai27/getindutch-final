@@ -2,25 +2,25 @@ package com.weikang.getindutch;
 
 import java.util.HashMap;
 
-public class Groups {
+public class MPFGroupsClass {
 
     private String name;
     private String photoUrl;
     private HashMap<String, Float> members;
     private int size;
 
-    public Groups(String name, String photoUrl, HashMap<String, Float> members){
+    public MPFGroupsClass(String name, String photoUrl, HashMap<String, Float> members){
         this.name = name;
         this.photoUrl = photoUrl;
         this.members = members;
         this.size = 0;
     }
 
-    public Groups(String name, HashMap<String, Float> members){
+    public MPFGroupsClass(String name, HashMap<String, Float> members){
         this(name, "https://cdn.pixabay.com/photo/2016/11/14/17/39/group-1824145_960_720.png", members);
     }
 
-    public Groups(){
+    public MPFGroupsClass(){
         this("testGroup", "https://cdn.pixabay.com/photo/2016/11/14/17/39/group-1824145_960_720.png", new HashMap<String, Float>());
     }
 

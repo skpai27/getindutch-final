@@ -17,10 +17,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 
-public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
+public class MPFFriendsAdapter extends RecyclerView.Adapter<MPFFriendsAdapter.ViewHolder> {
 
 
-    private ArrayList<Users> mFriends = new ArrayList<>();
+    private ArrayList<MPFFriendsUsersClass> mFriends = new ArrayList<>();
     //private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
 
@@ -41,7 +41,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     //provide a suitable constructor based on type of dataset
     //constructor will get the data we need
-    public FriendsAdapter(ArrayList<Users> friends, Context context){
+    public MPFFriendsAdapter(ArrayList<MPFFriendsUsersClass> friends, Context context){
         //mImageNames = imageNames;
         //mImages = images;
         mFriends = friends;
@@ -50,7 +50,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     //create new views (invoked by layout manager)
     @Override
-    public FriendsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public MPFFriendsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         //create new view //potential bug
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_friends,
                 parent, false);

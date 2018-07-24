@@ -21,10 +21,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 
-public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdapter.ViewHolder> {
+public class MPFFriendRequestAdapter extends RecyclerView.Adapter<MPFFriendRequestAdapter.ViewHolder> {
 
 
-    private ArrayList<Users> mFriends = new ArrayList<>();
+    private ArrayList<MPFFriendsUsersClass> mFriends = new ArrayList<>();
     //private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
 
@@ -49,7 +49,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
 
     //provide a suitable constructor based on type of dataset
     //constructor will get the data we need
-    public FriendRequestAdapter(ArrayList<Users> friends, Context context){
+    public MPFFriendRequestAdapter(ArrayList<MPFFriendsUsersClass> friends, Context context){
         //mImageNames = imageNames;
         //mImages = images;
         mFriends = friends;
@@ -58,7 +58,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
 
     //create new views (invoked by layout manager)
     @Override
-    public FriendRequestAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public MPFFriendRequestAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         //create new view //potential bug
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_request,
                 parent, false);
@@ -94,7 +94,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
                 FirebaseDatabase.getInstance().getReference().child("users").child(myUid).child("friends").child(friendUid).setValue(0f);
                 FirebaseDatabase.getInstance().getReference().child("friendReq").child(myUid).child("received").child(friendUid).removeValue();
                 Toast.makeText(mContext, "You have accepted " + mFriends.get(position).getName() + " as your friend!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, FriendRequestPage.class);
+                Intent intent = new Intent(mContext, MPFFriendsRequestPage.class);
                 mContext.startActivity(intent);
             }
         });
@@ -106,7 +106,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
                 String myUid = FirebaseAuth.getInstance().getUid();
                 FirebaseDatabase.getInstance().getReference().child("friendReq").child(myUid).child("received").child(friendUid).child("ignored").setValue(true);
                 Toast.makeText(mContext, "You have ignored " + mFriends.get(position).getName() + "'s friend request.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, FriendRequestPage.class);
+                Intent intent = new Intent(mContext, MPFFriendsRequestPage.class);
                 mContext.startActivity(intent);
             }
         });

@@ -37,7 +37,6 @@ public class GroupsPage extends AppCompatActivity {
     private ImageButton returnBtn;
 
     //variables for recyclerview Adapter
-    private ArrayList<Users> mMembers = new ArrayList<>();
     private GroupMembersAdapter mAdapter;
 
     //Firebase variables
@@ -196,7 +195,6 @@ public class GroupsPage extends AppCompatActivity {
                         mFirebaseDatabase.getReference().child("users").child(membersUid).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                                Users friend = new Users(dataSnapshot1.child("uid").getValue().toString(), dataSnapshot1.child("name").getValue().toString());
                                 mMembers.add(friend);
                                 mAdapter.notifyItemInserted(mMembers.size() - 1);
                             }

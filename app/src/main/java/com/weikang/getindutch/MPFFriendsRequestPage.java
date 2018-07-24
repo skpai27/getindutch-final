@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FriendRequestPage extends AppCompatActivity {
+public class MPFFriendsRequestPage extends AppCompatActivity {
 
     //Firebase user
     private FirebaseAuth mAuth;
@@ -24,8 +24,8 @@ public class FriendRequestPage extends AppCompatActivity {
 
     //Adapter
     private RecyclerView mFriendRequests;
-    private ArrayList<Users> mFriendReqList;
-    private FriendRequestAdapter mAdapter;
+    private ArrayList<MPFFriendsUsersClass> mFriendReqList;
+    private MPFFriendRequestAdapter mAdapter;
     private ChildEventListener mChildEventListener;
 
     //Database
@@ -51,7 +51,7 @@ public class FriendRequestPage extends AppCompatActivity {
         //Set up adapter
         mFriendRequests = (RecyclerView) findViewById(R.id.friend_requests_list);
         mFriendReqList = new ArrayList<>();
-        mAdapter = new FriendRequestAdapter(mFriendReqList,this);
+        mAdapter = new MPFFriendRequestAdapter(mFriendReqList,this);
         mFriendRequests.setAdapter(mAdapter);
         mFriendRequests.setLayoutManager(new LinearLayoutManager(this));
 
@@ -66,7 +66,7 @@ public class FriendRequestPage extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                                     String name = dataSnapshot1.getValue().toString();
-                                    Users friend = new Users(dataSnapshot.getKey(),name);
+                                    MPFFriendsUsersClass friend = new MPFFriendsUsersClass(dataSnapshot.getKey(),name);
                                     mFriendReqList.add(friend);
                                     mAdapter.notifyItemInserted(mFriendReqList.size() - 1);
                                 }
