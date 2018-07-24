@@ -19,10 +19,10 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AllPageAdapter extends RecyclerView.Adapter<AllPageAdapter.ViewHolder> {
+public class MPFGroupsPageAdapter extends RecyclerView.Adapter<MPFGroupsPageAdapter.ViewHolder> {
 
 
-    private ArrayList<Groups> mGroups = new ArrayList<>();
+    private ArrayList<MPFGroupsClass> mGroups = new ArrayList<>();
     //private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
 
@@ -50,17 +50,17 @@ public class AllPageAdapter extends RecyclerView.Adapter<AllPageAdapter.ViewHold
 
     //provide a suitable constructor based on type of dataset
     //constructor will get the data we need
-    public AllPageAdapter(ArrayList<Groups> Groups, Context context){
+    public MPFGroupsPageAdapter(ArrayList<MPFGroupsClass> MPFGroupsClass, Context context){
         //mImageNames = imageNames;
         //mImages = images;
-        mGroups = Groups;
+        mGroups = MPFGroupsClass;
         mContext = context;
         mUserId = mAuth.getUid();
     }
 
     //create new views (invoked by layout manager)
     @Override
-    public AllPageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public MPFGroupsPageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         //create new view //potential bug
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_all_page_adapter,
                 parent, false);

@@ -53,7 +53,7 @@ import java.util.HashMap;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class AllPage extends Fragment {
+public class MPFGroupsPage extends Fragment {
     private static final String TAG = "AllPageFragment";
     private static final int CAMERA_PIC_REQUEST = 2;
     private static final int MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 3;
@@ -66,8 +66,8 @@ public class AllPage extends Fragment {
     private RecyclerView mRecyclerView;
 
     //variables for recyclerview Adapter
-    private ArrayList<Groups> mGroups = new ArrayList<>();
-    private AllPageAdapter mAdapter;
+    private ArrayList<MPFGroupsClass> mGroups = new ArrayList<>();
+    private MPFGroupsPageAdapter mAdapter;
 
     //Firebase variables
     //Database
@@ -94,7 +94,7 @@ public class AllPage extends Fragment {
         //Initialise Adapter and recyclerview etc
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         //use getActivity() instead of (this) for context cos this is a fragment
-        mAdapter = new AllPageAdapter(mGroups, getActivity());
+        mAdapter = new MPFGroupsPageAdapter(mGroups, getActivity());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -133,7 +133,7 @@ public class AllPage extends Fragment {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                             for (DataSnapshot datas : dataSnapshot1.getChildren()){
                                 if(datas.getKey().equals(groupName)) {
-                                    Groups group = datas.getValue(Groups.class);
+                                    MPFGroupsClass group = datas.getValue(MPFGroupsClass.class);
                                     mGroups.add(group);
                                     mAdapter.notifyItemInserted(mGroups.size() - 1);
                                 }
@@ -188,7 +188,7 @@ public class AllPage extends Fragment {
             @Override
             public void onClick(View v){
                 switchActivity();
-                Intent intent = new Intent(getActivity(), AddExpenses.class);
+                Intent intent = new Intent(getActivity(), AEAddExpensesMain.class);
                 startActivity(intent);
             }
         });
@@ -229,7 +229,7 @@ public class AllPage extends Fragment {
                 if (currGroupName.isEmpty()){
                     Toast.makeText(getActivity(),"Please enter a group name!", Toast.LENGTH_SHORT).show();
                 } else {
-                    final Groups newGroup = new Groups(currGroupName, new HashMap<String, Float>()); //not really sure why it has to be final
+                    final MPFGroupsClass newGroup = new MPFGroupsClass(currGroupName, new HashMap<String, Float>()); //not really sure why it has to be final
                     final DatabaseReference groupRef = mGroupDatabaseReference.child(currGroupName);
                     ValueEventListener eventListener = new ValueEventListener() {
                         @Override

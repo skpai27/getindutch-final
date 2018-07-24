@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddExpenses extends AppCompatActivity {
+public class AEAddExpensesMain extends AppCompatActivity {
 
     private Spinner mPayeeSpinner;
     private Spinner mGroupSpinner;
@@ -41,7 +41,7 @@ public class AddExpenses extends AppCompatActivity {
     private ChildEventListener mChildEventListener;
 
     //RecyclerView for members to split bill with
-    private UserAddExpenseAdapter mAdapter;
+    private AEUserAddExpenseAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
     private String selectedGroup;
@@ -66,11 +66,11 @@ public class AddExpenses extends AppCompatActivity {
         mButtonAdd = findViewById(R.id.button_add);
 
         //RecyclerView config
-        final ArrayList<UserAddExpense> mUsers = new ArrayList<>();
+        final ArrayList<AEUserAddExpenseClass> mUsers = new ArrayList<>();
         //Initialise Adapter and recyclerview etc
         mRecyclerView = findViewById(R.id.recyclerView);
         //use getActivity() instead of (this) for context cos this is a fragment
-        mAdapter = new UserAddExpenseAdapter(this, mUsers);
+        mAdapter = new AEUserAddExpenseAdapter(this, mUsers);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -119,12 +119,12 @@ public class AddExpenses extends AppCompatActivity {
             public void onClick(View v){
                 final Float expense = Float.parseFloat(mExpense.getText().toString());
                 /*Log.i(TAG, "before user.getiud");
-                for(UserAddExpense user:mAdapter.checkedUsers){
+                for(AEUserAddExpenseClass user:mAdapter.checkedUsers){
                     Log.i(TAG, user.getName());
                 }*/
                 //to insert all Uids into an arraylist so that we can check if they are selected
                 final ArrayList<String> selectedUserUids = new ArrayList<>();
-                for(UserAddExpense user:mAdapter.checkedUsers){
+                for(AEUserAddExpenseClass user:mAdapter.checkedUsers){
                     selectedUserUids.add(user.getUid());
                 }
 
@@ -178,14 +178,14 @@ public class AddExpenses extends AppCompatActivity {
                 });
 
                 Toast.makeText(getApplicationContext(),"Expense added!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(AddExpenses.this,MainPage.class);
+                Intent intent = new Intent(AEAddExpensesMain.this,MainPage.class);
                 startActivity(intent);
             }
         });
     }
 
     //function to change the recyclerview everytime the selection of the group changes
-    private void refreshAdapter(final String mUserId, final ArrayList<UserAddExpense> mUsers){
+    private void refreshAdapter(final String mUserId, final ArrayList<AEUserAddExpenseClass> mUsers){
         mRecyclerView.setAdapter(null);
         mAdapter.clear();
         mAdapter.checkedUsers.clear();
@@ -201,7 +201,7 @@ public class AddExpenses extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 String userName = dataSnapshot.child("name").getValue().toString();
-                                UserAddExpense newUser = new UserAddExpense(memberSnapshot.getKey(), userName);
+                                AEUserAddExpenseClass newUser = new AEUserAddExpenseClass(memberSnapshot.getKey(), userName);
                                 mUsers.add(newUser);
                                 mAdapter.checkedUsers.add(newUser);
                                 mAdapter.notifyItemInserted(mUsers.size() - 1);

@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FriendsPage extends Fragment {
+public class MPFFriendsPage extends Fragment {
     private static final String TAG = "FriendsPageFragment";
 
 
@@ -39,8 +39,8 @@ public class FriendsPage extends Fragment {
     private FirebaseAuth mAuth;
 
     //variables for recyclerview Adapter
-    private ArrayList<Users> mFriends = new ArrayList<>();
-    private FriendsAdapter mAdapter;
+    private ArrayList<MPFFriendsUsersClass> mFriends = new ArrayList<>();
+    private MPFFriendsAdapter mAdapter;
 
     //Firebase variables
     //Database
@@ -70,7 +70,7 @@ public class FriendsPage extends Fragment {
 
         //Initialise Adapter and recyclerview etc
         mRecyclerView = (RecyclerView) view.findViewById(R.id.friendsRecycler);
-        mAdapter = new FriendsAdapter(mFriends, getActivity());
+        mAdapter = new MPFFriendsAdapter(mFriends, getActivity());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -101,7 +101,7 @@ public class FriendsPage extends Fragment {
         friendRequest.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getActivity(), FriendRequestPage.class);
+                Intent intent = new Intent(getActivity(), MPFFriendsRequestPage.class);
                 startActivity(intent);
             }
         });
@@ -121,7 +121,7 @@ public class FriendsPage extends Fragment {
                     mFirebaseDatabase.getReference().child("users").child(friendUid).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                            Users friend = new Users(friendUid,dataSnapshot1.child("name").getValue().toString());
+                            MPFFriendsUsersClass friend = new MPFFriendsUsersClass(friendUid,dataSnapshot1.child("name").getValue().toString());
                             mFriends.add(friend);
                             mAdapter.notifyItemInserted(mFriends.size()-1);
                         }

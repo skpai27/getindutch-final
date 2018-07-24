@@ -19,10 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddExpenses"
+        <activity android:name=".AEAddExpensesMain"
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".GroupsPage" />
-        <activity android:name=".FriendRequestPage" />
+        <activity android:name=".MPFFriendsRequestPage" />
         <activity android:name=".ScannedTextPage"></activity>
     </application>
 
