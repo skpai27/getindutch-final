@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GetInDutch</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="menu_action_setting">Setting</string>
+    <string name="sign_out">Sign Out</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_add_expenses_manual">add_expenses_manual</string>
+    <string name="title_activity_friends_page">FriendsPage</string>
+</resources>

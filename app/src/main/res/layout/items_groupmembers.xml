@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:id="@+id/group_layout">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/member_profilePic"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignBottom="@+id/user_balance"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="27dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/member_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="8dp"
+        android:text="Canada"
+        android:textColor="#000"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/member_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/member_name"
+        android:layout_below="@+id/member_name"
+        android:textSize="24sp"
+        android:text="TextView" />
+</RelativeLayout>

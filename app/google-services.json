@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "584273488229",
+    "firebase_url": "https://getindutch-e6238.firebaseio.com",
+    "project_id": "getindutch-e6238",
+    "storage_bucket": "getindutch-e6238.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584273488229:android:bec50b65a14f6737",
+        "android_client_info": {
+          "package_name": "com.weikang.getindutch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584273488229-eiecosjq6cdnh0jmi1fu4mj4s84k76gs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.weikang.getindutch",
+            "certificate_hash": "1b22d24d202e0e599673d39ef8cccb86e9f931ad"
+          }
+        },
+        {
+          "client_id": "584273488229-d7j80evb2st2p6hq08jb0ukuam7gu2gh.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "584273488229-d7j80evb2st2p6hq08jb0ukuam7gu2gh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDstu52lcqaUF8k0-YtVsfTiNjX3bi7rbE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584273488229-d7j80evb2st2p6hq08jb0ukuam7gu2gh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

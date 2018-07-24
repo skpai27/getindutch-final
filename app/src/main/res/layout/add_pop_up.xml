@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="256dp"
+    android:layout_height="256dp"
+    android:layout_gravity="center"
+    android:background="#9d5b5b"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/text_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:background="@drawable/circlebackground"
+        android:gravity="center"
+        android:text="X"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/create_group"
+        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create group" />
+
+    <Button
+        android:id="@+id/manual_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Expenses Manually" />
+
+    <Button
+        android:id="@+id/scanner_receipt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan Receipt" />
+
+</LinearLayout>
