@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,8 +25,8 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<ReceiptItemAdapter.
     private ArrayList<ReceiptItem> mTexts = new ArrayList<>();
     private Context mContext;
     private String targetGroup;
-    private ArrayList<String> mMembers;
-    private ArrayAdapter<String> mSpinnerAdapter;
+    private ArrayList<SCCheckboxSpinner> mMembers;
+    private SCCheckboxSpinnerAdapter mSpinnerAdapter;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //each dataItem is only just a string, we should create all the views needed here
@@ -59,7 +58,7 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<ReceiptItemAdapter.
                     mFirebaseDatabase.getReference().child("users").child(ds.getKey()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                            mMembers.add(dataSnapshot2.getValue().toString());
+                            mMembers.add(new SCCheckboxSpinner(dataSnapshot2.getValue().toString()));
                         }
 
                         @Override
@@ -94,7 +93,7 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<ReceiptItemAdapter.
 
         holder.mItemDescription.setText(mTexts.get(position).getItemDescriptions());
         holder.mItemPrice.setText("$"+String.format("%.2f",mTexts.get(position).getItemPrice()));
-        mSpinnerAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, mMembers);
+        mSpinnerAdapter = new SCCheckboxSpinnerAdapter(mContext,0,mMembers);
         mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holder.mFriendsSpinner.setAdapter(mSpinnerAdapter);
         holder.mFriendsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
