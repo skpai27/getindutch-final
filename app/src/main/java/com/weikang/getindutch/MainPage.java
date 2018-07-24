@@ -41,6 +41,7 @@ public class MainPage extends AppCompatActivity {
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private TessOCR mTessOCR;
+    private MPFFriendsUsersClass currentUser;
 
 
     @Override
@@ -93,6 +94,7 @@ public class MainPage extends AppCompatActivity {
     }
 
     public void onSignedInInitialise(String userUid){
+        currentUser = new MPFFriendsUsersClass(userUid,mUsername);
         final DatabaseReference currDataRef = mUsersDatabaseReference.child(userUid);
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
@@ -159,6 +161,9 @@ public class MainPage extends AppCompatActivity {
 
     private void setupViewPage(ViewPager viewPager){
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new MPFGroupsPage(), "All");
+        adapter.addFragment(new MPFSummaryPage(),"Summary");
+        adapter.addFragment(new MPFFriendsPage(),"Friends");
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
     }
