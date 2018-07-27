@@ -3,19 +3,19 @@ package com.weikang.getindutch;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ReceiptItem implements Parcelable {
+public class SCReceiptItem implements Parcelable {
 
     private String itemDescriptions;
     private Float itemPrice;
     private String targetGroup;
 
-    public ReceiptItem(String itemDescriptions, Float itemPrice) {
+    public SCReceiptItem(String itemDescriptions, Float itemPrice) {
         this.itemDescriptions = itemDescriptions;
         this.itemPrice = itemPrice;
         this.targetGroup = "";
     }
 
-    public ReceiptItem(Parcel pc){
+    public SCReceiptItem(Parcel pc){
         itemDescriptions = pc.readString();
         itemPrice = pc.readFloat();
         targetGroup = pc.readString();
@@ -41,15 +41,15 @@ public class ReceiptItem implements Parcelable {
         dest.writeString(targetGroup);
     }
 
-    public static final Parcelable.Creator<ReceiptItem> CREATOR = new Parcelable.Creator<ReceiptItem>(){
+    public static final Parcelable.Creator<SCReceiptItem> CREATOR = new Parcelable.Creator<SCReceiptItem>(){
         @Override
-        public ReceiptItem createFromParcel(Parcel source) {
-            return new ReceiptItem(source);
+        public SCReceiptItem createFromParcel(Parcel source) {
+            return new SCReceiptItem(source);
         }
 
         @Override
-        public ReceiptItem[] newArray(int size) {
-            return new ReceiptItem[size];
+        public SCReceiptItem[] newArray(int size) {
+            return new SCReceiptItem[size];
         }
     };
 

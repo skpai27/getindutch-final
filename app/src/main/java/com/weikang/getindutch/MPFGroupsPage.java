@@ -78,8 +78,8 @@ public class MPFGroupsPage extends Fragment {
     private DatabaseReference mGroupDatabaseReference;
     private DatabaseReference mUsersDatabaseReference;
 
-    //TessOCR
-    private TessOCR mTessOCR;
+    //SCTessOCR
+    private SCTessOCR mSCTessOCR;
 
     @Nullable
     @Override
@@ -276,7 +276,7 @@ public class MPFGroupsPage extends Fragment {
                     bitmap = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(targetUri));
                     bitmap = rotateImageIfRequired(bitmap,getContext(),targetUri);
                     AssetManager assetManager = getContext().getAssets();
-                    mTessOCR = new TessOCR(assetManager, "eng");
+                    mSCTessOCR = new SCTessOCR(assetManager, "eng");
                     mDialogAddpopup.dismiss();
                     // Here, thisActivity is the current activity
                     doOCR(bitmap);
@@ -296,26 +296,26 @@ public class MPFGroupsPage extends Fragment {
     private void doOCR (final Bitmap bitmap) {
         new Thread(new Runnable() {
             public void run() {
-                final String srcText = mTessOCR.getOCRResult(bitmap);
+                final String srcText = mSCTessOCR.getOCRResult(bitmap);
                 if (srcText != null && !srcText.equals("")) {
                     Bundle bundle = new Bundle();
-                    ArrayList<ReceiptItem> lines = processReceipt(mTessOCR);
+                    ArrayList<SCReceiptItem> lines = processReceipt(mSCTessOCR);
                     bundle.putParcelableArrayList("srcText",lines);
                     /*bundle.putString("srcText",srcText);*/
-                    Intent intent = new Intent(getContext(), ScannedTextPage.class);
+                    Intent intent = new Intent(getContext(), SCScannedTextPage.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
                     Log.d(TAG, "bitch " + lines.toString() + "?");
                 }
-                mTessOCR.onDestroy();
+                mSCTessOCR.onDestroy();
             }
         }).start();
     }
 
-    private ArrayList<ReceiptItem> processReceipt(TessOCR mTessOCR) {
-        TessBaseAPI tessBaseAPI = mTessOCR.getmTess();
+    private ArrayList<SCReceiptItem> processReceipt(SCTessOCR mSCTessOCR) {
+        TessBaseAPI tessBaseAPI = mSCTessOCR.getmTess();
         ResultIterator iterator = tessBaseAPI.getResultIterator();
-        ArrayList<ReceiptItem> processedArray = new ArrayList<>();
+        ArrayList<SCReceiptItem> processedArray = new ArrayList<>();
         boolean isItem = false;
         while (iterator.next(TessBaseAPI.PageIteratorLevel.RIL_TEXTLINE)){
 
@@ -340,7 +340,7 @@ public class MPFGroupsPage extends Fragment {
                     }
                     Log.d(TAG, "?" + word + "?");
                 }
-                ReceiptItem currentItem = new ReceiptItem(itemDescription,itemPrice);
+                SCReceiptItem currentItem = new SCReceiptItem(itemDescription,itemPrice);
                 processedArray.add(currentItem);
             }
             if (currentLine.equals("SGD\n")){

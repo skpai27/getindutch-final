@@ -40,7 +40,7 @@ public class MainPage extends AppCompatActivity {
     private String mUsername;
     private Toolbar mToolbar;
     private ViewPager mViewPager;
-    private TessOCR mTessOCR;
+    private SCTessOCR mSCTessOCR;
     private MPFFriendsUsersClass currentUser;
 
 

@@ -1,5 +1,6 @@
 package com.weikang.getindutch;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,10 +23,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScannedTextPage extends AppCompatActivity {
+public class SCScannedTextPage extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private ReceiptItemAdapter mAdapter = null;
+    private SCReceiptItemAdapter mAdapter = null;
+    private Button mConfirm;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mGroupDatabaseRef;
@@ -41,6 +44,7 @@ public class ScannedTextPage extends AppCompatActivity {
         //initialising widgets
         mRecyclerView = findViewById(R.id.receiptItems);
         groupSelectorSpinner = findViewById(R.id.groupSelector);
+        mConfirm = (Button) findViewById(R.id.confirmBtn);
 
         //initialising auth and database
         mAuth = FirebaseAuth.getInstance();
@@ -55,7 +59,7 @@ public class ScannedTextPage extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
                     mGroups.add(ds.getKey());
                 }
-                mSpinnerAdapter = new ArrayAdapter<>(ScannedTextPage.this, android.R.layout.simple_spinner_item, mGroups);
+                mSpinnerAdapter = new ArrayAdapter<>(SCScannedTextPage.this, android.R.layout.simple_spinner_item, mGroups);
                 mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 groupSelectorSpinner.setAdapter(mSpinnerAdapter);
             }
@@ -72,21 +76,36 @@ public class ScannedTextPage extends AppCompatActivity {
                 targetGroupName = parent.getItemAtPosition(position).toString();
                 //retrieve text from ocr
                 Bundle bundle = getIntent().getExtras();
-                ArrayList<ReceiptItem> srcText = bundle.getParcelableArrayList("srcText");
+                ArrayList<SCReceiptItem> srcText = bundle.getParcelableArrayList("srcText");
                 srcText.get(0).setTargetGroup(targetGroupName);
 
 
                 //initialise adapter view
                 if (mRecyclerView.getAdapter() != null){
                     mRecyclerView.setAdapter(null);
-                    Toast.makeText(ScannedTextPage.this, "adapter set to null", Toast.LENGTH_SHORT).show();
                 }
-                mRecyclerView.setAdapter(new ReceiptItemAdapter(srcText,ScannedTextPage.this));
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(ScannedTextPage.this));
+                mAdapter = new SCReceiptItemAdapter(srcText,SCScannedTextPage.this);
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(SCScannedTextPage.this));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        //confirm button on click
+        mConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    mAdapter.submit();
+                    Toast.makeText(SCScannedTextPage.this, "These costs have been added.", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SCScannedTextPage.this,MainPage.class);
+                    startActivity(intent);
+                } catch (ArithmeticException e){
+                    Toast.makeText(SCScannedTextPage.this,"Please make sure at least one check box is ticked for each item.", Toast.LENGTH_LONG ).show();
+                }
             }
         });
     }

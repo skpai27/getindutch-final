@@ -5,16 +5,18 @@
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_width="83dp"
+        android:layout_height="31dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:text="text"
-        android:textAlignment="gravity" />
+        android:textAlignment="gravity"
+        android:textSize="18sp" />
 
     <CheckBox
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/text" />
 </RelativeLayout>

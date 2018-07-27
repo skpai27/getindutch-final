@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class TessOCR {
+public class SCTessOCR {
     public static final String PACKAGE_NAME = "com.weikang.getindutch";
     public static final String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/AndroidOCR/";
 
@@ -22,7 +22,7 @@ public class TessOCR {
 
     private TessBaseAPI mTess;
 
-    public TessOCR(AssetManager assetManager, String lang) {
+    public SCTessOCR(AssetManager assetManager, String lang) {
 
         Log.i(TAG, DATA_PATH);
 

@@ -23,7 +23,7 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".GroupsPage" />
         <activity android:name=".MPFFriendsRequestPage" />
-        <activity android:name=".ScannedTextPage"></activity>
+        <activity android:name=".SCScannedTextPage"></activity>
     </application>
 
 </manifest>
