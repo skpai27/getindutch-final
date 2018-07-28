@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -83,7 +84,19 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         mFirebaseDatabase.getReference().child("groups").child(mGroupName).child("members").child(mMembers.get(position).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                holder.membersDebt.setText("owes you $" + dataSnapshot.getValue().toString().substring(1));
+                float value = Float.parseFloat(dataSnapshot.getValue().toString());
+                value = Math.round(value * 100) / (float) 100.0;
+                String text;
+                if (value > 0){
+                    text = mMembers.get(position).getName() + " is owed $" + value;
+                } else {
+                    String payeeName = mMembers.get(position).getPayee();
+                    if (payeeName.equals(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())){
+                        payeeName = "you";
+                    }
+                    text = mMembers.get(position).getName() + " owes " + payeeName + " $" + (-value);
+                }
+                holder.membersDebt.setText(text);
             }
 
             @Override

@@ -180,7 +180,7 @@ public class SCReceiptItemAdapter extends RecyclerView.Adapter<SCReceiptItemAdap
             membersRef.child(mMembers.get(i).getMemberUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                    float value = Float.parseFloat(dataSnapshot2.getValue().toString()) + addTo[finalI];
+                    float value = Float.parseFloat(dataSnapshot2.getValue().toString()) + Math.round(addTo[finalI] * 100) / (float) 100.0;
                     Log.d("debug", mMembers.get(finalI).getMemberName() + " adds " + value);
                     membersRef.child(mMembers.get(finalI).getMemberUid()).setValue(value);
                 }

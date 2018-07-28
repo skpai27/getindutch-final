@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GroupsPage extends AppCompatActivity {
 
@@ -35,10 +37,13 @@ public class GroupsPage extends AppCompatActivity {
     private ImageView myProfilePic;
     private TextView myBal;
     private ImageButton returnBtn;
+    private float myBalInFloat;
 
     //variables for recyclerview Adapter
     private ArrayList<MPFFriendsUsersClass> mMembers = new ArrayList<>();
+    private ArrayList<MPFFriendsUsersClass> mMembersAlgo = new ArrayList<>();
     private GroupMembersAdapter mAdapter;
+    private MPFFriendsUsersClass myself;
 
     //Firebase variables
     //Database
@@ -69,6 +74,8 @@ public class GroupsPage extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         myName.setText(mAuth.getCurrentUser().getDisplayName());
+        myself = new MPFFriendsUsersClass(mAuth.getUid(),mAuth.getCurrentUser().getDisplayName());
+        mMembersAlgo.add(myself);
 
 
         //Initialise Adapter and recyclerview etc
@@ -81,19 +88,6 @@ public class GroupsPage extends AppCompatActivity {
         //initialise Firebase variables
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mMembersDatabaseReference = mFirebaseDatabase.getReference().child("groups").child(groupName).child("members");
-        mMembersDatabaseReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String text = "You're owed $".concat(dataSnapshot.getValue().toString());
-                myBal.setText(text);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
         startView();
 
         returnBtn.setOnClickListener(new View.OnClickListener() {
@@ -190,15 +184,20 @@ public class GroupsPage extends AppCompatActivity {
                 //first adding group object into the arraylist, then use adpater.notifyiteminserted
 
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
                     String membersUid = dataSnapshot.getKey();
                     if (!membersUid.equals(mAuth.getUid())) {
                         mFirebaseDatabase.getReference().child("users").child(membersUid).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                                 MPFFriendsUsersClass friend = new MPFFriendsUsersClass(dataSnapshot1.child("uid").getValue().toString(), dataSnapshot1.child("name").getValue().toString());
+                                float value = Float.parseFloat(dataSnapshot.getValue().toString());
+                                value = Math.round(value * 100) / (float) 100.0;
+                                friend.setBal(value);
                                 mMembers.add(friend);
+                                mMembersAlgo.add(friend);
                                 mAdapter.notifyItemInserted(mMembers.size() - 1);
+                                processBalance();
                             }
 
                             @Override
@@ -206,7 +205,12 @@ public class GroupsPage extends AppCompatActivity {
 
                             }
                         });
+                    } else {
+                        myBalInFloat = Math.round(Float.parseFloat(dataSnapshot.getValue().toString()) * 100) / (float) 100.0;
+                        myself.setBal(myBalInFloat);
+                        processBalance();
                     }
+
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -222,6 +226,48 @@ public class GroupsPage extends AppCompatActivity {
                 }
             };
             mMembersDatabaseReference.addChildEventListener(mChildEventListener);
+        }
+    }
+
+    public void processBalance(){
+        Collections.sort(mMembersAlgo);
+        int front = 0;
+        int back = mMembersAlgo.size() - 1;
+        if (back == -1){
+            return;
+        }
+        float high = mMembersAlgo.get(back).getBal();
+        float low = mMembersAlgo.get(front).getBal();
+        while (front < back){
+            if (high + low < 0){
+                Log.d("debug", mMembersAlgo.get(back).getName() + " set " + mMembersAlgo.get(front).getName() + " as payee.");
+                low = low + high;
+                mMembersAlgo.get(back--).setPayee(mMembersAlgo.get(front).getName());
+                high = mMembersAlgo.get(front).getBal();
+            } else if (high + low > 0) {
+                Log.d("debug", mMembersAlgo.get(front).getName() + " set " + mMembersAlgo.get(back).getName() + " as payee.");
+                high = high + low;
+                mMembersAlgo.get(front++).setPayee(mMembersAlgo.get(back).getName());
+                low = mMembersAlgo.get(back).getBal();
+            } else {
+                Log.d("debug", mMembersAlgo.get(front).getName() + " set " + mMembersAlgo.get(back).getName() + " as payee.");
+                mMembersAlgo.get(front++).setPayee(mMembersAlgo.get(back--).getName());
+                low = mMembersAlgo.get(front).getBal();
+                high = mMembersAlgo.get(back).getBal();
+            }
+        }
+        Log.d("debug",mMembersAlgo.toString());
+        if(myBalInFloat<0){
+            String payee = "";
+            for (MPFFriendsUsersClass member : mMembersAlgo){
+                if (member.getName().equals(mAuth.getCurrentUser().getDisplayName())){
+                    payee = member.getPayee();
+                    myBal.setText("You owe " + payee + " $" + -member.getBal());
+                    break;
+                }
+            }
+        } else {
+            myBal.setText("You are owed $" + myBalInFloat);
         }
     }
 }

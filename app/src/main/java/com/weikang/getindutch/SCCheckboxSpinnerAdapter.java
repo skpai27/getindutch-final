@@ -126,16 +126,16 @@ public class SCCheckboxSpinnerAdapter extends ArrayAdapter<SCCheckboxSpinner> {
             if (checkedItemsList[i]) {
                 if (listState.get(i).getMemberName().equals(currentUser)) {
                     if (numberSharing != 1) {
-                        addTo[i] = Math.round(itemCost * 100 / (float) numberSharing) / (float) 100.0;
+                        addTo[i] = itemCost/ (float) numberSharing;
                     }
                     //Log.d("debug", "A = " + addTo[i]);
                 } else {
-                    addTo[i] = - Math.round(itemCost * 100 / (float) numberSharing) / (float) 100.0;
+                    addTo[i] = - itemCost / (float) numberSharing;
                     //Log.d("debug", "B = " + addTo[i]);
                 }
             } else {
                 if (listState.get(i).getMemberName().equals(currentUser)) {
-                    addTo[i] = Math.round(itemCost*100) / (float) 100.0;
+                    addTo[i] = itemCost;
                     //Log.d("debug", "C = " + addTo[i]);
                 } else {
                     addTo[i] = (float) 0.0;
