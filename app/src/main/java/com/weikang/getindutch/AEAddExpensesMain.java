@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class AEAddExpensesMain extends AppCompatActivity {
@@ -31,6 +32,7 @@ public class AEAddExpensesMain extends AppCompatActivity {
     private Spinner mPayeeSpinner;
     private Spinner mGroupSpinner;
     private EditText mExpense;
+    private EditText mDescription;
     private Button mButtonAdd;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUserGroupsDatabaseReference;
@@ -38,6 +40,7 @@ public class AEAddExpensesMain extends AppCompatActivity {
     private DatabaseReference mUserReference;
     private DatabaseReference mGroupSizeDatabaseReference;
     private DatabaseReference mMembersDatabaseReference;
+    private DatabaseReference mExpenseRecordsReference;
     private ChildEventListener mChildEventListener;
 
     //RecyclerView for members to split bill with
@@ -60,8 +63,11 @@ public class AEAddExpensesMain extends AppCompatActivity {
 
         //Firebase Database initialisation
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+        //Expenses database reference (to put expense information)
+        mExpenseRecordsReference = mFirebaseDatabase.getReference().child("expenseRecords");
 
         mExpense = findViewById(R.id.edittext_Expense);
+        mDescription = findViewById(R.id.edittext_description);
         //initialise button
         mButtonAdd = findViewById(R.id.button_add);
 
@@ -118,15 +124,20 @@ public class AEAddExpensesMain extends AppCompatActivity {
         mButtonAdd.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 final Float expense = Float.parseFloat(mExpense.getText().toString());
+                String description = mDescription.getText().toString();
                 /*Log.i(TAG, "before user.getiud");
                 for(AEUserAddExpenseClass user:mAdapter.checkedUsers){
                     Log.i(TAG, user.getName());
                 }*/
+                //Hashmap to store uid:userName maps for expenseRecord
+                HashMap<String, String> peopleSharingExpense = new HashMap<>();
                 //to insert all Uids into an arraylist so that we can check if they are selected
                 final ArrayList<String> selectedUserUids = new ArrayList<>();
                 for(AEUserAddExpenseClass user:mAdapter.checkedUsers){
                     selectedUserUids.add(user.getUid());
+                    peopleSharingExpense.put(user.getUid(), user.getName());
                 }
+
 
                 //Firebase Database variables
                 //get reference to the group that was selected
@@ -134,11 +145,13 @@ public class AEAddExpensesMain extends AppCompatActivity {
                 mGroupSizeDatabaseReference = mGroupDatabaseReference.child("size");
                 mMembersDatabaseReference = mGroupDatabaseReference.child("members");
 
-                //get size of group: (sk: added size attribute to group in database for this)
-                //use array of size1 to retrieve data from firebase cos of some variables problem
+                //TODO: change this url to be variable
+                String expenseIconUrl = "https://www.shareicon.net/download/2016/08/18/809809_cab_512x512.png";
+                //Creating expenseRecord to store in database
+                MPFSummaryPageExpensesClass expenseRecord = new MPFSummaryPageExpensesClass(mUserId,
+                        selectedGroup, description, expense, expense/(mAdapter.checkedUsers.size() + 1), peopleSharingExpense, expenseIconUrl );
+                mExpenseRecordsReference.push().setValue(expenseRecord);
 
-                //final int[] sizeOfGroup = new int[1];
-                //this might be unnecessary alr cos now using size of arrayList checkedUsers for size
                 mGroupDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

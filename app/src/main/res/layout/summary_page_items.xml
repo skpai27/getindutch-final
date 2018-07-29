@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="190dp"
+    android:layout_height="90dp">
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="11dp"
+        android:text="Taxi from house to train"
+        android:textColor="@android:color/background_dark"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/sub_text_second_line"
+        android:layout_width="wrap_content"
+        android:layout_height="13dp"
+        android:layout_alignStart="@+id/description"
+        android:layout_below="@+id/sub_text_first_line"
+        android:text="TextView"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/sub_text_first_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/description"
+        android:layout_below="@+id/group_name_or_indiv_name"
+        android:text="TextView"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/group_name_or_indiv_name"
+        android:layout_width="110dp"
+        android:layout_height="16dp"
+        android:layout_alignStart="@+id/description"
+        android:layout_centerVertical="true"
+        android:text="GroupName"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/summary_amount"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/description"
+        android:layout_toEndOf="@+id/group_name_or_indiv_name"
+        android:text="num"
+        android:textAlignment="viewEnd"
+        android:textSize="18sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/expense_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/sub_text_second_line"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:src="@mipmap/ic_launcher" />
+
+</RelativeLayout>
