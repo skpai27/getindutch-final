@@ -2,6 +2,7 @@ package com.weikang.getindutch;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -263,11 +264,13 @@ public class GroupsPage extends AppCompatActivity {
                 if (member.getName().equals(mAuth.getCurrentUser().getDisplayName())){
                     payee = member.getPayee();
                     myBal.setText("You owe " + payee + " $" + -member.getBal());
+                    myBal.setTextColor(Color.RED);
                     break;
                 }
             }
         } else {
             myBal.setText("You are owed $" + myBalInFloat);
+            myBal.setTextColor(getResources().getColor(R.color.green));
         }
     }
 }

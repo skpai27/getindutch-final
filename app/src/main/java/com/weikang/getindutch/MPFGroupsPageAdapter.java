@@ -2,6 +2,7 @@ package com.weikang.getindutch;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -79,8 +80,13 @@ public class MPFGroupsPageAdapter extends RecyclerView.Adapter<MPFGroupsPageAdap
 
         holder.mGroupName.setText(mGroups.get(position).getName());
         Float balance = mGroups.get(position).getMembers().get(mUserId);
-        holder.mUserBalance.setText(String.valueOf(balance));
-
+        if (balance < 0 ){
+            holder.mUserBalance.setText("You owe $" + -balance);
+            holder.mUserBalance.setTextColor(Color.RED);
+        } else {
+            holder.mUserBalance.setText("You are owed $" + balance);
+            holder.mUserBalance.setTextColor(mContext.getResources().getColor(R.color.green));
+        }
         //sets what happens when u click the object
         holder.mParentLayout.setOnClickListener(new View.OnClickListener() {
             @Override

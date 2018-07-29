@@ -87,7 +87,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
                 float value = Float.parseFloat(dataSnapshot.getValue().toString());
                 value = Math.round(value * 100) / (float) 100.0;
                 String text;
-                if (value > 0){
+                if (value >= 0){
                     text = mMembers.get(position).getName() + " is owed $" + value;
                 } else {
                     String payeeName = mMembers.get(position).getPayee();
