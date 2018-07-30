@@ -202,7 +202,7 @@ public class MPFFriendsPage extends Fragment {
                                                 mFriendReqDatabaseReference.child(friendUID).child("received").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                                                        if (dataSnapshot2.child("ignored").getValue().toString().equals("false")){
+                                                        if (dataSnapshot2.child("ignored").getValue() == null || dataSnapshot2.child("ignored").getValue().toString().equals("false")){
                                                             Toast.makeText(getActivity(), currUserName + " friend request has already been sent.", Toast.LENGTH_SHORT).show();
                                                         } else {
                                                             Toast.makeText(getActivity(), currUserName + " friend request has been sent.", Toast.LENGTH_SHORT).show();

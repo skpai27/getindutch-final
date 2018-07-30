@@ -24,7 +24,7 @@ public class SCTessOCR {
 
     public SCTessOCR(AssetManager assetManager, String lang) {
 
-        Log.i(TAG, DATA_PATH);
+        //Log.i(TAG, DATA_PATH);
 
         this.assetManager = assetManager;
 

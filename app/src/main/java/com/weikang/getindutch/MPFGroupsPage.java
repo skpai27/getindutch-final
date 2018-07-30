@@ -390,6 +390,7 @@ public class MPFGroupsPage extends Fragment {
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         Uri data = Uri.parse(pictureDirectory.getPath());
         cameraIntent.setDataAndType(data, "image/*");
+        isStoragePermissionGranted();
         startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
     }
 
@@ -407,7 +408,7 @@ public class MPFGroupsPage extends Fragment {
             }
         }
         else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted");
+            Log.v(TAG,"sdk < 23 , Permission is granted");
             return true;
         }
     }
@@ -420,6 +421,4 @@ public class MPFGroupsPage extends Fragment {
             //resume tasks needing this permission
         }
     }
-
-    //TODO: onCreate method to save states between fragments, clear viewpager if logout.
 }
