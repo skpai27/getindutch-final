@@ -52,7 +52,7 @@ public class MPFFriendsAdapter extends RecyclerView.Adapter<MPFFriendsAdapter.Vi
     @Override
     public MPFFriendsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         //create new view //potential bug
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_friends,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mpf_items_friends,
                 parent, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;

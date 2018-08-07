@@ -75,7 +75,7 @@ public class SCCheckboxSpinnerAdapter extends ArrayAdapter<SCCheckboxSpinner> {
         final ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflator = LayoutInflater.from(mContext);
-            convertView = layoutInflator.inflate(R.layout.spinner_item_checkbox, null);
+            convertView = layoutInflator.inflate(R.layout.sc_spinner_item_checkbox, null);
             holder = new ViewHolder();
             holder.mTextView = (TextView) convertView
                     .findViewById(R.id.text);

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class SCScannedTextPage extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private SCReceiptItemAdapter mAdapter = null;
     private Button mConfirm;
+    private EditText mItemDescription;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mGroupDatabaseRef;
@@ -39,12 +41,13 @@ public class SCScannedTextPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scanned_text_page);
+        setContentView(R.layout.sc_activity_scanned_text_page);
 
         //initialising widgets
         mRecyclerView = findViewById(R.id.receiptItems);
         groupSelectorSpinner = findViewById(R.id.groupSelector);
         mConfirm = (Button) findViewById(R.id.confirmBtn);
+        mItemDescription = (EditText)  findViewById(R.id.ExpenseDescription);
 
         //initialising auth and database
         mAuth = FirebaseAuth.getInstance();
@@ -99,10 +102,14 @@ public class SCScannedTextPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    mAdapter.submit();
-                    Toast.makeText(SCScannedTextPage.this, "These costs have been added.", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SCScannedTextPage.this,MainPage.class);
-                    startActivity(intent);
+                    if (!mItemDescription.getText().toString().equals("Description of this expense")) {
+                        mAdapter.submit(mItemDescription.getText().toString());
+                        Toast.makeText(SCScannedTextPage.this, "These costs have been added.", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(SCScannedTextPage.this, MainPage.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SCScannedTextPage.this,"Please enter a description for this expense.", Toast.LENGTH_LONG ).show();
+                    }
                 } catch (ArithmeticException e){
                     Toast.makeText(SCScannedTextPage.this,"Please make sure at least one check box is ticked for each item.", Toast.LENGTH_LONG ).show();
                 }

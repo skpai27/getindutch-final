@@ -6,14 +6,6 @@
     android:id="@+id/allPageFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Spinner
-        android:id="@+id/dropDown"
-        android:layout_width="284dp"
-        android:layout_height="33dp"
-        app:layout_constraintStart_toEndOf="@+id/sortBy"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--TODO: Try to make the button clickable-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addBtn"
         android:layout_width="64dp"
@@ -29,30 +21,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <TextView
-        android:id="@+id/sortBy"
-        android:layout_width="69dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:text="Sort By"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/dropDown"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="368dp"
-        android:layout_height="323dp"
+        android:layout_height="547dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dropDown" />
+        tools:layout_editor_absoluteY="8dp" />
 
 </android.support.constraint.ConstraintLayout>

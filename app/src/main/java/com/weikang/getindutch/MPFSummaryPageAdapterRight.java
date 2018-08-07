@@ -76,7 +76,7 @@ public class MPFSummaryPageAdapterRight extends RecyclerView.Adapter<MPFSummaryP
     @Override
     public MPFSummaryPageAdapterRight.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         //create new view //potential bug
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.summary_page_items,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mpf_summary_page_items,
                 parent, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;

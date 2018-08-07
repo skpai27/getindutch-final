@@ -41,6 +41,7 @@ public class MPFFriendsPage extends Fragment {
     //variables for recyclerview Adapter
     private ArrayList<MPFFriendsUsersClass> mFriends = new ArrayList<>();
     private MPFFriendsAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
 
     //Firebase variables
     //Database
@@ -57,7 +58,7 @@ public class MPFFriendsPage extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.friends_page,container,false);
+        View view = inflater.inflate(R.layout.mpf_friends_page,container,false);
 
         //Widgets
         friendRequest = (TextView) view.findViewById(R.id.friendRequest);
@@ -69,10 +70,15 @@ public class MPFFriendsPage extends Fragment {
         user = mAuth.getCurrentUser();
 
         //Initialise Adapter and recyclerview etc
+        mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView = (RecyclerView) view.findViewById(R.id.friendsRecycler);
+        //Commented out divider
+        //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), mLayoutManager.getOrientation());
+        //dividerItemDecoration.setDrawable(getContext().getResources().getDrawable(R.drawable.line_divider));
         mAdapter = new MPFFriendsAdapter(mFriends, getActivity());
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         //Database
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -165,7 +171,7 @@ public class MPFFriendsPage extends Fragment {
         TextView cancelBtn;
         TextView nextBtn;
         final EditText userName;
-        mDialogAddFriend.setContentView(R.layout.add_friends_popup);
+        mDialogAddFriend.setContentView(R.layout.mpf_add_friends_popup);
         cancelBtn = (TextView) mDialogAddFriend.findViewById(R.id.cancelBtn2);
         nextBtn = (TextView) mDialogAddFriend.findViewById(R.id.nextBtn2);
         userName = (EditText) mDialogAddFriend.findViewById(R.id.userName);
@@ -202,13 +208,13 @@ public class MPFFriendsPage extends Fragment {
                                                 mFriendReqDatabaseReference.child(friendUID).child("received").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                                                        if (dataSnapshot2.child("ignored").getValue() == null || dataSnapshot2.child("ignored").getValue().toString().equals("false")){
-                                                            Toast.makeText(getActivity(), currUserName + " friend request has already been sent.", Toast.LENGTH_SHORT).show();
-                                                        } else {
+                                                        if (dataSnapshot2.child("ignored").getValue() == null || dataSnapshot2.child("ignored").getValue().toString().equals("true")){
                                                             Toast.makeText(getActivity(), currUserName + " friend request has been sent.", Toast.LENGTH_SHORT).show();
                                                             mFriendReqDatabaseReference.child(friendUID).child("received").child(user.getUid()).child("ignored").setValue(false);
                                                             mDialogAddFriend.dismiss();
                                                             mChildEventListener = null;
+                                                        } else {
+                                                            Toast.makeText(getActivity(), currUserName + " friend request has already been sent.", Toast.LENGTH_SHORT).show();
                                                         }
                                                     }
 

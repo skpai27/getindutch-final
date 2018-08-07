@@ -60,7 +60,7 @@ public class MPFFriendRequestAdapter extends RecyclerView.Adapter<MPFFriendReque
     @Override
     public MPFFriendRequestAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         //create new view //potential bug
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_request,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mpf_friend_request,
                 parent, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;

@@ -28,7 +28,7 @@ public class AEUserAddExpenseAdapter extends RecyclerView.Adapter<AEUserAddExpen
     //initialise viewholder
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_groupmembers_splitbill, null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ae_items_groupmembers_splitbill, null);
         MyHolder holder = new MyHolder(v);
         return holder;
     }

@@ -1,8 +1,11 @@
 package com.weikang.getindutch;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -29,6 +33,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
     private String mGroupName;
     //private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
+    private Dialog mPayeeText;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //each dataItem is only just a string, we should create all the views needed here
@@ -38,7 +43,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         CircleImageView friendsProfilePic;
         RelativeLayout mParentLayout;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView) {
             super(itemView);
             mUsername = itemView.findViewById(R.id.member_name);
             friendsProfilePic = itemView.findViewById(R.id.member_profilePic);
@@ -49,20 +54,21 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
     //provide a suitable constructor based on type of dataset
     //constructor will get the data we need
-    public GroupMembersAdapter(ArrayList<MPFFriendsUsersClass> members, String groupName, Context context){
+    public GroupMembersAdapter(ArrayList<MPFFriendsUsersClass> members, String groupName, Context context) {
         //mImageNames = imageNames;
         //mImages = images;
         mGroupName = groupName;
         mMembers = members;
         mContext = context;
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mPayeeText = new Dialog(mContext);
     }
 
     //create new views (invoked by layout manager)
     @Override
-    public GroupMembersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public GroupMembersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //create new view //potential bug
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_groupmembers,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mpf_items_groupmembers,
                 parent, false);
         GroupMembersAdapter.ViewHolder vh = new GroupMembersAdapter.ViewHolder(view);
         return vh;
@@ -71,7 +77,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
     //replace the contents of a view(invoked by layout manager)
     @Override
-    public void onBindViewHolder(final GroupMembersAdapter.ViewHolder holder, final int position){
+    public void onBindViewHolder(final GroupMembersAdapter.ViewHolder holder, final int position) {
         //get images
         Glide.with(mContext)
                 .asBitmap()
@@ -87,14 +93,32 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
                 float value = Float.parseFloat(dataSnapshot.getValue().toString());
                 value = Math.round(value * 100) / (float) 100.0;
                 String text;
-                if (value >= 0){
+                if (value >= 0) {
                     text = mMembers.get(position).getName() + " is owed $" + value;
                 } else {
-                    String payeeName = mMembers.get(position).getPayee();
-                    if (payeeName.equals(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())){
-                        payeeName = "you";
+                    final HashMap<String, Float> payee = mMembers.get(position).getPayee();
+                    if (payee.size() == 1) {
+                        String payeeName = "";
+                        for (String name : payee.keySet()) {
+                            payeeName = name;
+                        }
+                        if (payeeName.equals(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())) {
+                            payeeName = "you";
+                        }
+                        text = mMembers.get(position).getName() + " owes " + payeeName + " $" + (-value);
+                    } else {
+                        text = "Click here to view who " + mMembers.get(position).getName() + " owes";
+                        holder.membersDebt.setClickable(true);
+                        holder.membersDebt.setTextSize(14);
+                        holder.membersDebt.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                        holder.membersDebt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //Toast.makeText(mContext,"Clickable", Toast.LENGTH_SHORT).show();
+                                showPayeePopup(mMembers.get(position).getName(),payee);
+                            }
+                        });
                     }
-                    text = mMembers.get(position).getName() + " owes " + payeeName + " $" + (-value);
                 }
                 holder.membersDebt.setText(text);
             }
@@ -108,7 +132,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         //sets what happens when u click the object
         holder.mParentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 Toast.makeText(mContext, mMembers.get(position).getName(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -126,6 +150,20 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
     //return size of your dataset (invoked by layout manager)
     @Override
-    public int getItemCount(){ return mMembers.size(); }
+    public int getItemCount() {
+        return mMembers.size();
+    }
+
+    public void showPayeePopup(String name, HashMap<String,Float> payeeList){
+        mPayeeText.setContentView(R.layout.mpf_show_payee_dialog);
+        TextView payeeDisplay = mPayeeText.findViewById(R.id.payeeText);
+        String payeeText = "";
+        for (String key : payeeList.keySet()){
+            Log.d("debug", " Payee list = " + payeeList.keySet().toString());
+            payeeText = payeeText.concat(name + " owes " + key + " $" + (- Math.round(payeeList.get(key) * 100) / (float) 100.0) + "\n");
+        }
+        payeeDisplay.setText(payeeText);
+        mPayeeText.show();
+    }
 
 }

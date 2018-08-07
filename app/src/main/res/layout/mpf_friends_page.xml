@@ -11,14 +11,14 @@
         android:id="@+id/friendRequest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:text="Friend Requests"
-        android:textSize="24sp"
+        android:textColor="#000"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/friendRequestCount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/friendRequestCount"
@@ -26,11 +26,23 @@
         android:layout_height="35dp"
         android:layout_marginStart="104dp"
         android:text="0"
+        android:textColor="#000"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/friendRequest"
+        app:layout_constraintBaseline_toBaselineOf="@+id/friendRequest"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/friendRequest"
-        app:layout_constraintTop_toTopOf="@+id/friendRequest" />
+        app:layout_constraintStart_toEndOf="@+id/friendRequest" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="4dp"
+        android:background="#b0a0a0"
+        android:visibility="visible"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friendRequest" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/friendsAddPopup"

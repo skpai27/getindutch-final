@@ -2,24 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp"
+    android:padding="8dp"
     android:id="@+id/items_friends">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/profilePic"
-        android:src="@mipmap/ic_launcher"
-        />
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="friends"
         android:id="@+id/userName"
-        android:layout_toRightOf="@+id/profilePic"
+        android:layout_toEndOf="@+id/profilePic"
         android:textColor="#000"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="48dp"
-        android:textSize="30dp"/>
+        android:layout_marginStart="48dp"
+        android:textSize="20sp"/>
 </RelativeLayout>

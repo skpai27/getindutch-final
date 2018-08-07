@@ -54,7 +54,7 @@ public class AEAddExpensesMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_expenses_manual);
+        setContentView(R.layout.ae_add_expenses_manual);
 
         //Firebase Auth variables
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();

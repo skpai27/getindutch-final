@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class SCReceiptItemAdapter extends RecyclerView.Adapter<SCReceiptItemAdapter.ViewHolder> {
@@ -84,7 +86,7 @@ public class SCReceiptItemAdapter extends RecyclerView.Adapter<SCReceiptItemAdap
     @Override
     public SCReceiptItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //create new view //potential bug
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.receipt_items,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sc_receipt_items,
                 parent, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
@@ -161,11 +163,20 @@ public class SCReceiptItemAdapter extends RecyclerView.Adapter<SCReceiptItemAdap
 
     }
 
-    public void submit() {
+    public void submit(String description) {
         final float[] addTo = new float[mMembersSize];
         //Log.d("debug", "member size = " + mMembersSize);
+        float expense = 0;
+        float amountOwedPerPax = 0;
+
+        //iterate through items to get total amount paid by current user
+        for (SCReceiptItem items : mTexts){
+            expense += items.getItemPrice();
+        }
+        expense = Math.round(expense * 100) / (float) 100.0;
         for (SCCheckboxSpinnerAdapter adapters : mAdapters) {
             float[] adapterAddTo = adapters.submit();
+
 
             for (int i = 0; i < addTo.length; i++) {
                 Log.d("debug", i + " " + adapterAddTo[i]);
@@ -173,9 +184,19 @@ public class SCReceiptItemAdapter extends RecyclerView.Adapter<SCReceiptItemAdap
             }
         }
 
+        //Create hashmap for database
+        HashMap<String,String> peopleSharingExpense = new HashMap<>();
         FirebaseDatabase mFirebaseDb = FirebaseDatabase.getInstance();
         final DatabaseReference membersRef = mFirebaseDb.getReference().child("groups").child(targetGroup).child("members");
+        DatabaseReference expenseRef = mFirebaseDb.getReference().child("expenseRecords");
         for (int i = 0; i < addTo.length; i++) {
+            if(!mMembers.get(i).getMemberUid().equals(FirebaseAuth.getInstance().getUid())){
+                //if not current user, add to hashmap
+                peopleSharingExpense.put(mMembers.get(i).getMemberUid(),mMembers.get(i).getMemberName());
+            } else {
+                //Derived from the math of MPFSummaryPageExpensesCLass
+                amountOwedPerPax = expense - Math.round(addTo[i] * 100) / (float) 100.0;
+            }
             final int finalI = i;
             membersRef.child(mMembers.get(i).getMemberUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -191,5 +212,10 @@ public class SCReceiptItemAdapter extends RecyclerView.Adapter<SCReceiptItemAdap
                 }
             });
         }
+        String expenseIconUrl = "https://www.shareicon.net/download/2016/08/18/809809_cab_512x512.png";
+        MPFSummaryPageExpensesClass expenseRecord = new MPFSummaryPageExpensesClass(FirebaseAuth.getInstance().getUid(),
+                targetGroup, description , expense, amountOwedPerPax,
+                peopleSharingExpense, expenseIconUrl );
+        expenseRef.push().setValue(expenseRecord);
     }
 }

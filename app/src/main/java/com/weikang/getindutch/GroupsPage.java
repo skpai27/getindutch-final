@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class GroupsPage extends AppCompatActivity {
 
@@ -53,6 +54,7 @@ public class GroupsPage extends AppCompatActivity {
     private ChildEventListener mChildEventListener;
 
     private Dialog mAddMembers;
+    private Dialog mPayeeText;
     private String groupName;
 
     @Override
@@ -66,6 +68,7 @@ public class GroupsPage extends AppCompatActivity {
         groupNameText.setText(groupName);
 
         mAddMembers = new Dialog(this);
+        mPayeeText = new Dialog(this);
 
         returnBtn = (ImageButton) findViewById(R.id.returnButton);
         mAddButton = (Button) findViewById(R.id.addMembers);
@@ -75,7 +78,7 @@ public class GroupsPage extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         myName.setText(mAuth.getCurrentUser().getDisplayName());
-        myself = new MPFFriendsUsersClass(mAuth.getUid(),mAuth.getCurrentUser().getDisplayName());
+        myself = new MPFFriendsUsersClass(mAuth.getUid(), mAuth.getCurrentUser().getDisplayName());
         mMembersAlgo.add(myself);
 
 
@@ -114,7 +117,7 @@ public class GroupsPage extends AppCompatActivity {
         TextView cancelBtn;
         TextView nextBtn;
         final EditText userName;
-        mAddMembers.setContentView(R.layout.add_group_members_dialog);
+        mAddMembers.setContentView(R.layout.mpf_add_group_members_dialog);
         cancelBtn = (TextView) mAddMembers.findViewById(R.id.cancelBtn3);
         nextBtn = (TextView) mAddMembers.findViewById(R.id.nextBtn3);
         userName = (EditText) mAddMembers.findViewById(R.id.userName2);
@@ -230,41 +233,60 @@ public class GroupsPage extends AppCompatActivity {
         }
     }
 
-    public void processBalance(){
+    public void processBalance() {
         Collections.sort(mMembersAlgo);
+        for (MPFFriendsUsersClass members : mMembersAlgo){
+            members.clearPayee();
+        }
         int front = 0;
         int back = mMembersAlgo.size() - 1;
-        if (back == -1){
+        if (back == -1) {
             return;
         }
         float high = mMembersAlgo.get(back).getBal();
         float low = mMembersAlgo.get(front).getBal();
-        while (front < back){
-            if (high + low < 0){
-                Log.d("debug", mMembersAlgo.get(back).getName() + " set " + mMembersAlgo.get(front).getName() + " as payee.");
+        while (front < back) {
+            if (high + low < 0) {
+                Log.d("debug", mMembersAlgo.get(front).getName() + " set " + mMembersAlgo.get(back).getName() + " as payee.");
+                mMembersAlgo.get(front).setPayee(mMembersAlgo.get(back--).getName(), -high);
                 low = low + high;
-                mMembersAlgo.get(back--).setPayee(mMembersAlgo.get(front).getName());
-                high = mMembersAlgo.get(front).getBal();
+                high = mMembersAlgo.get(back).getBal();
             } else if (high + low > 0) {
                 Log.d("debug", mMembersAlgo.get(front).getName() + " set " + mMembersAlgo.get(back).getName() + " as payee.");
+                mMembersAlgo.get(front++).setPayee(mMembersAlgo.get(back).getName(), low);
                 high = high + low;
-                mMembersAlgo.get(front++).setPayee(mMembersAlgo.get(back).getName());
-                low = mMembersAlgo.get(back).getBal();
+                low = mMembersAlgo.get(front).getBal();
             } else {
                 Log.d("debug", mMembersAlgo.get(front).getName() + " set " + mMembersAlgo.get(back).getName() + " as payee.");
-                mMembersAlgo.get(front++).setPayee(mMembersAlgo.get(back--).getName());
+                mMembersAlgo.get(front++).setPayee(mMembersAlgo.get(back--).getName(), low);
                 low = mMembersAlgo.get(front).getBal();
                 high = mMembersAlgo.get(back).getBal();
             }
         }
-        Log.d("debug",mMembersAlgo.toString());
-        if(myBalInFloat<0){
-            String payee = "";
-            for (MPFFriendsUsersClass member : mMembersAlgo){
-                if (member.getName().equals(mAuth.getCurrentUser().getDisplayName())){
-                    payee = member.getPayee();
-                    myBal.setText("You owe " + payee + " $" + -member.getBal());
-                    myBal.setTextColor(Color.RED);
+        Log.d("debug", mMembersAlgo.toString());
+        if (myBalInFloat < 0) {
+            for (MPFFriendsUsersClass member : mMembersAlgo) {
+                if (member.getName().equals(mAuth.getCurrentUser().getDisplayName())) {
+                    final HashMap<String, Float> payee = member.getPayee();
+                    if (payee.size() == 1) {
+                        String payeeName = "";
+                        for (String name : payee.keySet()) {
+                            payeeName = name;
+                        }
+                        myBal.setText("You owe " + payeeName + " $" + -myBalInFloat);
+                        myBal.setTextColor(Color.RED);
+                        myBal.setClickable(false);
+                    } else {
+                        myBal.setText("Click here to view who you owe");
+                        myBal.setClickable(true);
+                        myBal.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(GroupsPage.this, "Clickable", Toast.LENGTH_SHORT).show();
+                                showPayeePopup(payee);
+                            }
+                        });
+                    }
                     break;
                 }
             }
@@ -272,5 +294,16 @@ public class GroupsPage extends AppCompatActivity {
             myBal.setText("You are owed $" + myBalInFloat);
             myBal.setTextColor(getResources().getColor(R.color.green));
         }
+    }
+
+    public void showPayeePopup(HashMap<String, Float> payeeList) {
+        mPayeeText.setContentView(R.layout.mpf_show_payee_dialog);
+        TextView payeeDisplay = mPayeeText.findViewById(R.id.payeeText);
+        String payeeText = "";
+        for (String key : payeeList.keySet()) {
+            payeeText.concat("You owe " + key + " $" + payeeList.get(key) + "/n");
+        }
+        payeeDisplay.setText(payeeText);
+        mPayeeText.show();
     }
 }

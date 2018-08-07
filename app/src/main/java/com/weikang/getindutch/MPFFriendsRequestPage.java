@@ -37,7 +37,7 @@ public class MPFFriendsRequestPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_request_page);
+        setContentView(R.layout.mpf_activity_friend_request_page);
 
         //User info
         mAuth = FirebaseAuth.getInstance();

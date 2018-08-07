@@ -39,7 +39,7 @@ public class MPFSummaryPage extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.summary_page,container,false);
+        View view = inflater.inflate(R.layout.mpf_summary_page,container,false);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();

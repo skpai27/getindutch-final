@@ -63,7 +63,7 @@ public class MPFGroupsPageAdapter extends RecyclerView.Adapter<MPFGroupsPageAdap
     @Override
     public MPFGroupsPageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         //create new view //potential bug
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_all_page_adapter,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mpf_layout_all_page_adapter,
                 parent, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;

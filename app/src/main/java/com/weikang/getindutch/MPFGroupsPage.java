@@ -21,6 +21,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,7 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,13 +61,14 @@ public class MPFGroupsPage extends Fragment {
     private Dialog mDialogAddpopup;
     private Dialog mDialogCreateGroup;
 
-    private Spinner mSortDropdown;
     private FloatingActionButton mAddButton;
     private RecyclerView mRecyclerView;
 
     //variables for recyclerview Adapter
     private ArrayList<MPFGroupsClass> mGroups = new ArrayList<>();
     private MPFGroupsPageAdapter mAdapter;
+    private DividerItemDecoration dividerItemDecoration;
+    private LinearLayoutManager linearLayoutManager;
 
     //Firebase variables
     //Database
@@ -84,19 +85,21 @@ public class MPFGroupsPage extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.all_page,container,false);
+        View view = inflater.inflate(R.layout.mpf_groups_page,container,false);
 
         mAddButton = (FloatingActionButton) view.findViewById(R.id.addBtn);
-        mSortDropdown = (Spinner) view.findViewById(R.id.dropDown);
         mDialogAddpopup = new Dialog(getActivity());
         mDialogCreateGroup = new Dialog(getActivity());
 
         //Initialise Adapter and recyclerview etc
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        dividerItemDecoration = new DividerItemDecoration(getContext(), linearLayoutManager.getOrientation());
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         //use getActivity() instead of (this) for context cos this is a fragment
         mAdapter = new MPFGroupsPageAdapter(mGroups, getActivity());
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         //initialise Firebase variables
         mAuth = FirebaseAuth.getInstance();
@@ -171,7 +174,7 @@ public class MPFGroupsPage extends Fragment {
     }
 
     public void showAddPopup(View view){
-        mDialogAddpopup.setContentView(R.layout.add_pop_up);
+        mDialogAddpopup.setContentView(R.layout.mpf_add_pop_up);
         TextView textclose = (TextView) mDialogAddpopup.findViewById(R.id.text_close);
         Button manualAdd = (Button) mDialogAddpopup.findViewById(R.id.manual_add);
         Button receiptScan = (Button) mDialogAddpopup.findViewById(R.id.scanner_receipt);
@@ -211,7 +214,7 @@ public class MPFGroupsPage extends Fragment {
         TextView nextBtn;
         final EditText groupName;
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        mDialogCreateGroup.setContentView(R.layout.create_group_popup);
+        mDialogCreateGroup.setContentView(R.layout.mpf_create_group_popup);
         cancelBtn = (TextView) mDialogCreateGroup.findViewById(R.id.cancelBtn);
         nextBtn = (TextView) mDialogCreateGroup.findViewById(R.id.nextBtn);
         groupName = (EditText) mDialogCreateGroup.findViewById(R.id.groupName);
@@ -281,7 +284,6 @@ public class MPFGroupsPage extends Fragment {
                     // Here, thisActivity is the current activity
                     doOCR(bitmap);
                 } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
                     Toast.makeText(getContext(), "Unable to open image", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 } catch (IOException e) {
