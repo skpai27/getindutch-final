@@ -1,7 +1,6 @@
 package com.weikang.getindutch;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,10 +33,8 @@ public class GroupsPage extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FirebaseAuth mAuth;
     private TextView groupNameText;
-    private TextView myName;
-    private ImageView myProfilePic;
+    private ImageView groupProfilePic;
     private TextView myBal;
-    private ImageButton returnBtn;
     private float myBalInFloat;
 
     //variables for recyclerview Adapter
@@ -70,14 +66,11 @@ public class GroupsPage extends AppCompatActivity {
         mAddMembers = new Dialog(this);
         mPayeeText = new Dialog(this);
 
-        returnBtn = (ImageButton) findViewById(R.id.returnButton);
         mAddButton = (Button) findViewById(R.id.addMembers);
         myBal = (TextView) findViewById(R.id.my_balance);
-        myName = (TextView) findViewById(R.id.myname);
-        myProfilePic = (ImageView) findViewById(R.id.myprofilePic);
+        groupProfilePic = (ImageView) findViewById(R.id.groupProfilePic);
         mAuth = FirebaseAuth.getInstance();
 
-        myName.setText(mAuth.getCurrentUser().getDisplayName());
         myself = new MPFFriendsUsersClass(mAuth.getUid(), mAuth.getCurrentUser().getDisplayName());
         mMembersAlgo.add(myself);
 
@@ -93,14 +86,6 @@ public class GroupsPage extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mMembersDatabaseReference = mFirebaseDatabase.getReference().child("groups").child(groupName).child("members");
         startView();
-
-        returnBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GroupsPage.this, MainPage.class);
-                startActivity(intent);
-            }
-        });
 
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override

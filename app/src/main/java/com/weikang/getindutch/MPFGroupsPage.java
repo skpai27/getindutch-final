@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,15 +55,19 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class MPFGroupsPage extends Fragment {
+    //Constant values
     private static final String TAG = "AllPageFragment";
     private static final int CAMERA_PIC_REQUEST = 2;
     private static final int MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 3;
 
+    //Widgets
     private Dialog mDialogAddpopup;
     private Dialog mDialogCreateGroup;
 
     private FloatingActionButton mAddButton;
     private RecyclerView mRecyclerView;
+
+    private ProgressBar mProgressBar;
 
     //variables for recyclerview Adapter
     private ArrayList<MPFGroupsClass> mGroups = new ArrayList<>();
@@ -90,6 +95,7 @@ public class MPFGroupsPage extends Fragment {
         mAddButton = (FloatingActionButton) view.findViewById(R.id.addBtn);
         mDialogAddpopup = new Dialog(getActivity());
         mDialogCreateGroup = new Dialog(getActivity());
+        mProgressBar = view.findViewById(R.id.progressBar2);
 
         //Initialise Adapter and recyclerview etc
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -139,6 +145,7 @@ public class MPFGroupsPage extends Fragment {
                                     MPFGroupsClass group = datas.getValue(MPFGroupsClass.class);
                                     mGroups.add(group);
                                     mAdapter.notifyItemInserted(mGroups.size() - 1);
+                                    mProgressBar.setVisibility(View.INVISIBLE);
                                 }
                             }
                         }

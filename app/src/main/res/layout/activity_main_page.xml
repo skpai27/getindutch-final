@@ -21,14 +21,7 @@
             android:id="@+id/allPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Group"
-            android:textSize="20sp" />
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/summaryPage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Summary"
+            android:text="Groups"
             android:textSize="20sp" />
 
 
@@ -37,6 +30,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Friends"
+            android:textSize="20sp" />
+
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/summaryPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Summary"
             android:textSize="20sp" />
 
 

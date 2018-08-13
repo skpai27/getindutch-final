@@ -160,7 +160,11 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         String payeeText = "";
         for (String key : payeeList.keySet()){
             Log.d("debug", " Payee list = " + payeeList.keySet().toString());
-            payeeText = payeeText.concat(name + " owes " + key + " $" + (- Math.round(payeeList.get(key) * 100) / (float) 100.0) + "\n");
+            if (key.equals(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())){
+                payeeText = payeeText.concat(name + " owes you $" + (-Math.round(payeeList.get(key) * 100) / (float) 100.0) + "\n");
+            } else {
+                payeeText = payeeText.concat(name + " owes " + key + " $" + (-Math.round(payeeList.get(key) * 100) / (float) 100.0) + "\n");
+            }
         }
         payeeDisplay.setText(payeeText);
         mPayeeText.show();

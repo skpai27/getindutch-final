@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">GetInDutch</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="menu_action_setting">Setting</string>
+    <string name="menu_action_setting">Profile Settings</string>
     <string name="sign_out">Sign Out</string>
 
     <!-- TODO: Remove or change this placeholder text -->

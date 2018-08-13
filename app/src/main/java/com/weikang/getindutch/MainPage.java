@@ -158,6 +158,9 @@ public class MainPage extends AppCompatActivity {
                 //sign out
                 AuthUI.getInstance().signOut(this);
                 return true;
+            case R.id.action_set_profile:
+                Intent intent = new Intent(MainPage.this, PGEditProfilePage.class);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -179,9 +182,9 @@ public class MainPage extends AppCompatActivity {
 
     private void setupViewPage(ViewPager viewPager){
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MPFGroupsPage(), "All");
-        adapter.addFragment(new MPFSummaryPage(),"Summary");
+        adapter.addFragment(new MPFGroupsPage(), "Groups");
         adapter.addFragment(new MPFFriendsPage(),"Friends");
+        adapter.addFragment(new MPFSummaryPage(),"Summary");
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
     }

@@ -32,8 +32,8 @@
         android:text="Description"
         android:textColor="@android:color/background_dark"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="@+id/PayerType"
+        app:layout_constraintTop_toBottomOf="@+id/PayerType" />
 
     <Spinner
         android:id="@+id/spinner_group"
@@ -46,10 +46,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_payee" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_payer_type" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/PayerType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Type"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <TextView
+        android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -68,8 +80,8 @@
         android:text="Group"
         android:textColor="@android:color/background_dark"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="@+id/PayerType"
+        app:layout_constraintTop_toBottomOf="@+id/PayerType" />
 
     <TextView
         android:id="@+id/textView3"
@@ -97,7 +109,19 @@
         app:layout_constraintTop_toBottomOf="@+id/mainPageToolbar" />
 
     <Spinner
-        android:id="@+id/spinner_payee"
+        android:id="@+id/spinner_payer_type"
+        android:layout_width="272dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/spinner_group"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/PayerType"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_payee2" />
+
+    <Spinner
+        android:id="@+id/spinner_payee2"
         android:layout_width="272dp"
         android:layout_height="27dp"
         android:layout_marginStart="8dp"
@@ -105,7 +129,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/spinner_group"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/PayerType"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <EditText
