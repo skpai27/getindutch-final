@@ -51,6 +51,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
@@ -64,7 +66,7 @@ public class MPFGroupsPage extends Fragment {
     private Dialog mDialogAddpopup;
     private Dialog mDialogCreateGroup;
 
-    private FloatingActionButton mAddButton;
+    private FabSpeedDial mAddButton;
     private RecyclerView mRecyclerView;
 
     private ProgressBar mProgressBar;
@@ -92,7 +94,7 @@ public class MPFGroupsPage extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.mpf_groups_page,container,false);
 
-        mAddButton = (FloatingActionButton) view.findViewById(R.id.addBtn);
+        mAddButton = (FabSpeedDial) view.findViewById(R.id.addBtn);
         mDialogAddpopup = new Dialog(getActivity());
         mDialogCreateGroup = new Dialog(getActivity());
         mProgressBar = view.findViewById(R.id.progressBar2);
