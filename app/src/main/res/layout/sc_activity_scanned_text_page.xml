@@ -7,6 +7,15 @@
     android:background="#f5fffa"
     tools:context=".SCScannedTextPage">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.1"
+        android:src="@drawable/posterbg"
+        app:layout_constraintStart_toStartOf="@+id/mainPageToolbar"
+        app:layout_constraintTop_toTopOf="@+id/mainPageToolbar" />
+
     <TextView
         android:id="@+id/textView7"
         android:layout_width="126dp"
@@ -118,4 +127,5 @@
         app:layout_constraintEnd_toStartOf="@+id/groupSelector"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/groupSelector" />
+
 </android.support.constraint.ConstraintLayout>

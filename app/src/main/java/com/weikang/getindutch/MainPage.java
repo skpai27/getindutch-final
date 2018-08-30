@@ -88,7 +88,7 @@ public class MainPage extends AppCompatActivity {
                                     .setIsSmartLockEnabled(false)
                                     .setTheme(R.style.LoginTheme)
                                     //TODO: customise logo
-                                    .setLogo(R.mipmap.logo)
+                                    .setLogo(R.mipmap.posterbga)
                                     .setAvailableProviders(Arrays.asList(
                                             new AuthUI.IdpConfig.EmailBuilder().build(),
                                             new AuthUI.IdpConfig.GoogleBuilder().build()))

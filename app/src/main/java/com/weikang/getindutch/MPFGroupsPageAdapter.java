@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +21,9 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder;
 
-public class MPFGroupsPageAdapter extends RecyclerView.Adapter<MPFGroupsPageAdapter.ViewHolder> {
+public class MPFGroupsPageAdapter extends RecyclerView.Adapter<MPFGroupsPageAdapter.ViewHolder>  {
 
 
     private ArrayList<MPFGroupsClass> mGroups = new ArrayList<>();
@@ -32,7 +35,7 @@ public class MPFGroupsPageAdapter extends RecyclerView.Adapter<MPFGroupsPageAdap
     FirebaseUser mUser = mAuth.getCurrentUser();
     String mUserId;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements AnimateViewHolder{
         //each dataItem is only just a string, we should create all the views needed here
         //declare all the views needed
         TextView mGroupName;
@@ -47,6 +50,38 @@ public class MPFGroupsPageAdapter extends RecyclerView.Adapter<MPFGroupsPageAdap
             mGroupImage = itemView.findViewById(R.id.group_image);
             mParentLayout = itemView.findViewById(R.id.parent_layout);
         }
+
+        @Override
+        public void preAnimateRemoveImpl(RecyclerView.ViewHolder holder) {
+
+        }
+
+        @Override
+        public void animateRemoveImpl(RecyclerView.ViewHolder holder, ViewPropertyAnimatorListener listener) {
+            ViewCompat.animate(itemView)
+                    .translationY(-itemView.getHeight() * 0.3f)
+                    .alpha(0)
+                    .setDuration(300)
+                    .setListener(listener)
+                    .start();
+        }
+
+        @Override
+        public void preAnimateAddImpl(RecyclerView.ViewHolder holder) {
+            ViewCompat.setTranslationY(itemView, -itemView.getHeight() * 0.3f);
+            ViewCompat.setAlpha(itemView, 0);
+        }
+
+        @Override
+        public void animateAddImpl(RecyclerView.ViewHolder holder, ViewPropertyAnimatorListener listener) {
+            ViewCompat.animate(itemView)
+                    .translationY(0)
+                    .alpha(1)
+                    .setDuration(300)
+                    .setListener(listener)
+                    .start();
+        }
+
     }
 
     //provide a suitable constructor based on type of dataset
@@ -100,6 +135,8 @@ public class MPFGroupsPageAdapter extends RecyclerView.Adapter<MPFGroupsPageAdap
             }
         });
     }
+
+
 
     public void clear() {
         final int size = mGroups.size();

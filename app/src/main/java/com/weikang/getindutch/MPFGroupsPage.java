@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -50,6 +51,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -103,9 +108,25 @@ public class MPFGroupsPage extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         //use getActivity() instead of (this) for context cos this is a fragment
         mAdapter = new MPFGroupsPageAdapter(mGroups, getActivity());
-        mRecyclerView.setAdapter(mAdapter);
+
+        //adapter animation
+        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(mAdapter);
+        alphaAdapter.setDuration(2000);
+        alphaAdapter.setInterpolator(new OvershootInterpolator());
+        alphaAdapter.setFirstOnly(false);
+
+        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(alphaAdapter));
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        //animation
+        mRecyclerView.getItemAnimator().setAddDuration(2000);
+        mRecyclerView.getItemAnimator().setRemoveDuration(2000);
+        mRecyclerView.getItemAnimator().setMoveDuration(2000);
+        mRecyclerView.getItemAnimator().setChangeDuration(2000);
+        FadeInDownAnimator animator = new FadeInDownAnimator();
+        animator.setInterpolator(new OvershootInterpolator());
+        mRecyclerView.setItemAnimator(animator);
 
         //initialise Firebase variables
         mAuth = FirebaseAuth.getInstance();

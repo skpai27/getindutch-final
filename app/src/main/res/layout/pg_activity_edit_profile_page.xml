@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".PGEditProfilePage">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/posterbg"
+        android:alpha="0.1"
+        app:layout_constraintStart_toStartOf="@+id/mainPageToolbar"
+        app:layout_constraintTop_toTopOf="@+id/mainPageToolbar" />
+
     <View
         android:id="@+id/view"
         android:layout_width="0dp"

@@ -7,6 +7,15 @@
     android:background="#f5fffa"
     tools:context=".GroupsPage">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/posterbg"
+        android:alpha="0.1"
+        app:layout_constraintStart_toStartOf="@+id/mainPageToolbar"
+        app:layout_constraintTop_toTopOf="@+id/mainPageToolbar" />
+
     <TextView
         android:id="@+id/groupName"
         android:layout_width="wrap_content"
