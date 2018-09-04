@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 
 public class MPFFriendsPage extends Fragment {
     private static final String TAG = "FriendsPageFragment";
@@ -42,6 +47,7 @@ public class MPFFriendsPage extends Fragment {
     private ArrayList<MPFFriendsUsersClass> mFriends = new ArrayList<>();
     private MPFFriendsAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
 
     //Firebase variables
     //Database
@@ -71,6 +77,7 @@ public class MPFFriendsPage extends Fragment {
 
         //Initialise Adapter and recyclerview etc
         mLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView = (RecyclerView) view.findViewById(R.id.friendsRecycler);
         //Commented out divider
         //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), mLayoutManager.getOrientation());
@@ -79,6 +86,23 @@ public class MPFFriendsPage extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
         //mRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(mAdapter);
+        alphaAdapter.setDuration(2000);
+        alphaAdapter.setInterpolator(new OvershootInterpolator());
+        alphaAdapter.setFirstOnly(false);
+
+        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(alphaAdapter));
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        //animation
+        mRecyclerView.getItemAnimator().setAddDuration(2000);
+        mRecyclerView.getItemAnimator().setRemoveDuration(2000);
+        mRecyclerView.getItemAnimator().setMoveDuration(2000);
+        mRecyclerView.getItemAnimator().setChangeDuration(2000);
+        FadeInDownAnimator animator = new FadeInDownAnimator();
+        animator.setInterpolator(new OvershootInterpolator());
+        mRecyclerView.setItemAnimator(animator);
 
         //Database
         mFirebaseDatabase = FirebaseDatabase.getInstance();

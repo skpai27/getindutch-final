@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,10 +25,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
+
 public class SCScannedTextPage extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private SCReceiptItemAdapter mAdapter = null;
+    private LinearLayoutManager linearLayoutManager;
     private Button mConfirm;
     private EditText mItemDescription;
     private FirebaseAuth mAuth;
@@ -90,6 +96,26 @@ public class SCScannedTextPage extends AppCompatActivity {
                 mAdapter = new SCReceiptItemAdapter(srcText,SCScannedTextPage.this);
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(SCScannedTextPage.this));
+                linearLayoutManager = new LinearLayoutManager(SCScannedTextPage.this);
+
+                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(mAdapter);
+                alphaAdapter.setDuration(2000);
+                alphaAdapter.setInterpolator(new OvershootInterpolator());
+                alphaAdapter.setFirstOnly(false);
+
+                mRecyclerView.setAdapter(new ScaleInAnimationAdapter(alphaAdapter));
+                mRecyclerView.setLayoutManager(linearLayoutManager);
+
+                //animation
+                mRecyclerView.getItemAnimator().setAddDuration(2000);
+                mRecyclerView.getItemAnimator().setRemoveDuration(2000);
+                mRecyclerView.getItemAnimator().setMoveDuration(2000);
+                mRecyclerView.getItemAnimator().setChangeDuration(2000);
+                FadeInDownAnimator animator = new FadeInDownAnimator();
+                animator.setInterpolator(new OvershootInterpolator());
+                mRecyclerView.setItemAnimator(animator);
+
+
             }
 
             @Override

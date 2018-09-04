@@ -6,27 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.github.yavski.fabspeeddial.FabSpeedDial
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/addBtn"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        app:fabGravity="bottom_end"
-        app:fabMenu="@menu/menu_fab"
+        android:layout_gravity="bottom|right"
         android:layout_marginBottom="36dp"
         android:layout_marginEnd="36dp"
-
-        app:miniFabBackgroundTint="@android:color/white"
-        app:miniFabDrawableTint="?attr/colorPrimaryDark"
-        app:miniFabTitleTextColor="?attr/colorPrimaryDark"
-
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:tint="@android:color/white"
+        app:backgroundTint="@android:color/holo_orange_dark"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="368dp"
-        android:layout_height="547dp"
+        android:layout_height="458dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"

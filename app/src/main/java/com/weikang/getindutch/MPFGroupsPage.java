@@ -13,7 +13,6 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,9 +21,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.googlecode.tesseract.android.ResultIterator;
 import com.googlecode.tesseract.android.TessBaseAPI;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.enums.EPickType;
+import com.vansuita.pickimage.listeners.IPickCancel;
+import com.vansuita.pickimage.listeners.IPickResult;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,7 +65,7 @@ import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class MPFGroupsPage extends Fragment {
+public class MPFGroupsPage extends Fragment implements IPickResult{
     //Constant values
     private static final String TAG = "AllPageFragment";
     private static final int CAMERA_PIC_REQUEST = 2;
@@ -335,7 +341,6 @@ public class MPFGroupsPage extends Fragment {
                     Intent intent = new Intent(getContext(), SCScannedTextPage.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                    Log.d(TAG, "bitch " + lines.toString() + "?");
                 }
                 mSCTessOCR.onDestroy();
             }
@@ -416,12 +421,58 @@ public class MPFGroupsPage extends Fragment {
     }
 
     public void startReceiptScan(View view){
-        Intent cameraIntent = new Intent(Intent.ACTION_PICK);
+        mDialogAddpopup.dismiss();
+        PickSetup setup = new PickSetup()
+                .setPickTypes(EPickType.GALLERY, EPickType.CAMERA)
+                .setIconGravity(Gravity.LEFT)
+                .setProgressText("Processing")
+                .setButtonOrientation(LinearLayoutCompat.VERTICAL)
+                .setSystemDialog(false);
+        PickImageDialog.build(setup)
+                .setOnPickResult(new IPickResult() {
+                    @Override
+                    public void onPickResult(PickResult r) {
+                        //TODO: do what you have to...
+                        if (r.getError() == null) {
+                            try {
+                                Bitmap bitmap = rotateImageIfRequired(r.getBitmap(),getContext(), r.getUri());
+                                AssetManager assetManager = getContext().getAssets();
+                                mSCTessOCR = new SCTessOCR(assetManager, "eng");
+                                // Here, thisActivity is the current activity
+                                doOCR(bitmap);
+                            } catch (FileNotFoundException e) {
+                                Toast.makeText(getContext(), "Unable to open image", Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            //Handle possible errors
+                            //TODO: do what you have to do with r.getError();
+                            Log.d("debug", "onPickResult error");
+                        }
+                    }
+                })
+                .setOnPickCancel(new IPickCancel() {
+                    @Override
+                    public void onCancelClick() {
+                        //TODO: do what you have to if user clicked
+
+                    }
+                }).show(getActivity().getSupportFragmentManager());
+
+
+        /*Intent cameraIntent = new Intent(Intent.ACTION_PICK);
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         Uri data = Uri.parse(pictureDirectory.getPath());
         cameraIntent.setDataAndType(data, "image/*");
         isStoragePermissionGranted();
-        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);*/
+    }
+
+    @Override
+    public void onPickResult(PickResult r) {
+
     }
 
     public  boolean isStoragePermissionGranted() {

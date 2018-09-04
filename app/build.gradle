@@ -39,5 +39,9 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.rmtheis:tess-two:9.0.0'
     implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
+    compile 'com.github.jrvansuita:PickImage:+'
+
+    //for custom Floating action button
+    implementation 'io.github.yavski:fab-speed-dial:1.0.6'
 }
 apply plugin: 'com.google.gms.google-services'
